@@ -1,0 +1,21 @@
+{
+  "name": "krakenws",
+  "version": "1.0.0",
+  "description": "Websocket server for Mini Kraken projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AnthocDev",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.11",
+    "express": "^4.17.1",
+    "ws": "^7.4.3"
+  },
+  "devDependencies": {
+    "@types/ws": "^7.4.0",
+    "tslint": "^5.12.1",
+    "typescript": "^3.9.9"
+  }
+}
