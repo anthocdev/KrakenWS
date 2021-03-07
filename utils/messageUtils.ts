@@ -1,4 +1,4 @@
-import {Message, Author, AuthorType, ClientMessage} from "../model/websocket"
+import {Message, AuthorType, ClientMessage, Content, ContentType} from "../model/websocket"
 
 export function SimpleDateTime(): string{
     var date = new Date();
@@ -13,23 +13,30 @@ export function SimpleDateTime(): string{
     return dateString;
 }
 
-export function UserMessage(msg: any){
+export function UserMessage(msg: any): Content{
     var parsedMessage: ClientMessage = JSON.parse(msg.toString());
     
-    var FullMessage: Message = {
-        body: parsedMessage.message,
-        author: {name: parsedMessage.author, type: AuthorType.User},
-        createdAt: SimpleDateTime(),
+    var FullContent: Content = {
+        type: ContentType.Message,
+        data: { body: parsedMessage.message, author: {name: parsedMessage.author, type: AuthorType.User}, createdAt: SimpleDateTime()}
     }
-    return FullMessage;
+    return FullContent;
 }
 
-export function ServerMessage(message: string): Message{
-    var FullMessage = {
-        body: message,
-        author: {name: "Mini Kraken", type: AuthorType.Server},
-        createdAt: SimpleDateTime()
+export function ServerMessage(message: string): Content{
+    var FullContent: Content = {
+        type: ContentType.Message,
+        data: {body: message, author: {name: "Mini Kraken", type: AuthorType.Server}, createdAt: SimpleDateTime()}
     }
     
-    return FullMessage;
+    return FullContent;
+}
+
+export function SendHistory(history: Message[]){
+    var FullContent: Content = {
+        type: ContentType.History,
+        data: history
+    }
+
+    return FullContent;
 }

@@ -3,6 +3,18 @@ export interface ClientMessage {
     message: string;
   }
 
+/* Content */
+export interface Content{
+    type: ContentType,
+    data: any;
+}
+
+export enum ContentType{
+    Message = 0,
+    History = 1
+}
+
+/* Chat Message */
 export interface Message {
     body: string,
     author: Author,
