@@ -5,6 +5,8 @@ import {
   Content,
   ContentType,
 } from "../model/websocket";
+var Filter = require("bad-words"),
+  profanityFilter = new Filter();
 
 /* Simple method for customizing date/time structure. I don't want entire libraries for this... */
 export function SimpleDateTime(): string {
@@ -38,11 +40,22 @@ export function UserMessage(msg: any): Content {
     console.log("error happened");
     return error;
   }
+  /* Ensuring message contains text/numbers */
+  var regExpHasContent = /[a-zA-Z\d]/g;
+  if (!regExpHasContent.test(parsedMessage.message)) {
+    var error: Content = {
+      type: ContentType.Error,
+      data: { body: "Message can't be empty, has to contain numbers/letters." },
+    };
 
+    return error;
+  }
+
+  /* Valid message profanity 'filtered' */
   var FullContent: Content = {
     type: ContentType.Message,
     data: {
-      body: parsedMessage!.message,
+      body: profanityFilter.clean(parsedMessage!.message),
       author: { name: parsedMessage!.author, type: AuthorType.User },
       createdAt: SimpleDateTime(),
     },
