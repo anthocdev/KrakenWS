@@ -40,17 +40,46 @@ export function UserMessage(msg: any): Content {
     console.log("error happened");
     return error;
   }
-  /* Ensuring message contains text/numbers */
+  /* Validating: message contains text/numbers */
   var regExpHasContent = /[a-zA-Z\d]/g;
   if (!regExpHasContent.test(parsedMessage.message)) {
     var error: Content = {
       type: ContentType.Error,
-      data: { body: "Message can't be empty, has to contain numbers/letters." },
+      data: {
+        body: "Message can't be empty, has to contain letters and/or numbers.",
+      },
     };
 
     return error;
   }
 
+  /* Validating: username contains text/numbers and is longer 3 characters */
+  if (
+    parsedMessage.author.length < 3 ||
+    !regExpHasContent.test(parsedMessage.author)
+  ) {
+    var error: Content = {
+      type: ContentType.Error,
+      data: {
+        body:
+          "Username has to be longer than 3 characters and has to contain letters and/or numbers.",
+      },
+    };
+
+    return error;
+  }
+
+  /* Validating: username contains no profanity */
+  if (profanityFilter.isProfane(parsedMessage.author)) {
+    var error: Content = {
+      type: ContentType.Error,
+      data: {
+        body: "No offensive usernames allowed.",
+      },
+    };
+
+    return error;
+  }
   /* Valid message profanity 'filtered' */
   var FullContent: Content = {
     type: ContentType.Message,
