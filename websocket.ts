@@ -51,14 +51,15 @@ export default class WebSocketServer {
   /* Message Handling */
   private handleMessage(socket: ws, data: ws.Data): void {
     var relayMsg: Content = UserMessage(data); //Restructure user message for broadcast
-    this.msgHistory.push(relayMsg.data); //Add to history
-    this.msgHistory = this.msgHistory.slice(-10); //Storing no more than last 10 messages
 
     /* Broadcast to sender only in the case of error */
-    if ((relayMsg.type = ContentType.Error)) {
+    if (relayMsg.type == ContentType.Error) {
       socket.send(JSON.stringify(relayMsg));
       return;
     }
+    /* Storing server/user messages in history */
+    this.msgHistory.push(relayMsg.data); //Add to history
+    this.msgHistory = this.msgHistory.slice(-10); //Storing no more than last 10 messages
     /* Broadcast to all active users */
     this.wssChat.clients.forEach(function each(client) {
       if (client.readyState == ws.OPEN) {

@@ -35,7 +35,7 @@ export function UserMessage(msg: any): Content {
       type: ContentType.Error,
       data: { body: "Message structure invalid." },
     };
-
+    console.log("error happened");
     return error;
   }
 
