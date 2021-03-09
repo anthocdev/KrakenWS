@@ -14,7 +14,6 @@ export default class WebSocketServer {
 
   public static init(appserver: any): WebSocketServer {
     const server: WebSocketServer = new WebSocketServer(appserver);
-    console.info("Websocket Server running on port " + appserver);
 
     return server;
   }

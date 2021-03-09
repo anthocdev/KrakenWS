@@ -37,9 +37,24 @@ export function UserMessage(msg: any): Content {
       type: ContentType.Error,
       data: { body: "Message structure invalid." },
     };
-    console.log("error happened");
     return error;
   }
+
+  /* Validating: invalid structures */
+  if (parsedMessage.author == undefined || parsedMessage.message == undefined) {
+    console.log("Warn! - Invalid structure sent.");
+
+    var error: Content = {
+      type: ContentType.Error,
+      data: {
+        body:
+          "Invalid structure was sent to the server. What are you trying here?",
+      },
+    };
+
+    return error;
+  }
+
   /* Validating: message contains text/numbers */
   var regExpHasContent = /[a-zA-Z\d]/g;
   if (!regExpHasContent.test(parsedMessage.message)) {
