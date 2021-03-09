@@ -42,7 +42,7 @@ export function UserMessage(msg: any): Content {
   }
   /* Validating: message contains text/numbers */
   var regExpHasContent = /[a-zA-Z\d]/g;
-  if (!regExpHasContent.test(parsedMessage.message)) {
+  if (!regExpHasContent.test(parsedMessage.message?)) {
     var error: Content = {
       type: ContentType.Error,
       data: {
@@ -55,8 +55,8 @@ export function UserMessage(msg: any): Content {
 
   /* Validating: username contains text/numbers and is longer 3 characters */
   if (
-    parsedMessage.author.length < 3 ||
-    !regExpHasContent.test(parsedMessage.author)
+    parsedMessage.author?.length < 3 ||
+    !regExpHasContent?.test(parsedMessage.author?)
   ) {
     var error: Content = {
       type: ContentType.Error,
@@ -70,7 +70,7 @@ export function UserMessage(msg: any): Content {
   }
 
   /* Validating: username contains no profanity */
-  if (profanityFilter.isProfane(parsedMessage.author)) {
+  if (profanityFilter.isProfane(parsedMessage.author?)) {
     var error: Content = {
       type: ContentType.Error,
       data: {
